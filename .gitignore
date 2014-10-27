@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Windows image file caches
 Thumbs.db
 ehthumbs.db
@@ -7,6 +8,7 @@ Desktop.ini
 
 # Recycle Bin used on file shares
 $RECYCLE.BIN/
+.idea/*
 
 # Windows Installer files
 *.cab
@@ -34,3 +36,17 @@ Icon
 # Files that might appear on external disk
 .Spotlight-V100
 .Trashes
+=======
+*.class
+
+# Mobile Tools for Java (J2ME)
+.mtj.tmp/
+
+# Package Files #
+*.jar
+*.war
+*.ear
+
+# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
+hs_err_pid*
+>>>>>>> d045ae559c179cda5f308a1510156ba1b6c43749
