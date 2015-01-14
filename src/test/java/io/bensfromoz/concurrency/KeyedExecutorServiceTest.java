@@ -15,10 +15,11 @@ public class KeyedExecutorServiceTest {
 
     private AtomicInteger executionCounter;
     private KeyedExecutorService<String, Integer> keyedExecutorService;
+
     @Before
     public void init() {
         executionCounter = new AtomicInteger(0);
-        keyedExecutorService = new KeyedExecutorService<>(5, new LmaxStyleSleepingWait(), new LoggingFailureHandler());
+        keyedExecutorService = new KeyedExecutorService<>(2, new LmaxStyleSleepingWait(), new LoggingFailureHandler());
     }
 
     @Test
@@ -36,7 +37,16 @@ public class KeyedExecutorServiceTest {
         future1.get();
         future2.get();
         int result = future3.get();
+        waitWithTimeOut(3);
         assertEquals(3, result);
+        assertEquals(3, executionCounter.get());
+    }
+
+    private void waitWithTimeOut(int count) throws InterruptedException {
+        long start = System.currentTimeMillis();
+        while (executionCounter.get() < count || System.currentTimeMillis() - start < 2000) {
+            Thread.sleep(100);
+        }
     }
 
     @Test
@@ -48,7 +58,8 @@ public class KeyedExecutorServiceTest {
         future1.get();
         future2.get();
         int result = future3.get();
-        assertEquals(1, result);
+        assertEquals(1, executionCounter.get());
+        assertEquals(result, executionCounter.get());
     }
 
     @Test
@@ -60,7 +71,7 @@ public class KeyedExecutorServiceTest {
                 keyedExecutorService.submit("id1", newIncrementingKeyedCallable("id1")),
                 keyedExecutorService.submit("id3", newIncrementingKeyedCallable("id3"))
         );
-        for (Future<Integer> f: futures) {
+        for (Future<Integer> f : futures) {
             f.get();
         }
         assertEquals(3, executionCounter.get());
